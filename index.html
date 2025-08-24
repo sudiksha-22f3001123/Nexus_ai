@@ -1,0 +1,2048 @@
+<!doctype html>
+<html lang="en" data-bs-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nexus AI - Intelligent Assistant Platform</title>
+  <meta name="description" content="Advanced AI assistant with web search, code execution, and intelligent reasoning capabilities">
+  <meta name="keywords" content="AI, assistant, chatbot, automation, code execution, web search">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+  
+  <!-- External Resources -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ========================================
+       CUSTOM PROPERTIES & VARIABLES
+       ======================================== */
+    :root {
+      --nexus-primary: #2563eb;
+      --nexus-primary-dark: #1d4ed8;
+      --nexus-secondary: #8b5cf6;
+      --nexus-accent: #06b6d4;
+      --nexus-success: #10b981;
+      --nexus-warning: #f59e0b;
+      --nexus-danger: #ef4444;
+      --nexus-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --nexus-gradient-alt: linear-gradient(135deg, #2563eb 0%, #8b5cf6 100%);
+      --nexus-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --nexus-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --nexus-shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      --nexus-border-radius: 16px;
+      --nexus-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --nexus-backdrop: rgba(255, 255, 255, 0.9);
+      --nexus-glass: rgba(255, 255, 255, 0.4);
+    }
+
+    /* Dark theme variables */
+    [data-bs-theme="dark"] {
+      --nexus-backdrop: rgba(17, 24, 39, 0.9);
+      --nexus-glass: rgba(17, 24, 39, 0.4);
+    }
+
+    /* ========================================
+       GLOBAL STYLES & FOUNDATIONS
+       ======================================== */
+    * {
+      box-sizing: border-box;
+    }
+
+    body { 
+      background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+      color: #1e293b;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+      line-height: 1.6;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Animated background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%234f46e5' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      animation: float 20s ease-in-out infinite;
+      z-index: -1;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(180deg); }
+    }
+
+    .main-container { 
+      max-width: 900px; 
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Glass morphism effect */
+    .glass-effect {
+      background: var(--nexus-backdrop);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    /* Scrollbar styling */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.05);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--nexus-primary);
+      border-radius: 4px;
+      opacity: 0.7;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      opacity: 1;
+    }
+
+    /* ========================================
+       HEADER SECTION - PREMIUM DESIGN
+       ======================================== */
+    .header { 
+      text-align: center; 
+      margin-bottom: 3rem;
+      position: relative;
+    }
+    
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 200px;
+      height: 200px;
+      background: var(--nexus-gradient);
+      border-radius: 50%;
+      opacity: 0.1;
+      filter: blur(60px);
+      z-index: -1;
+    }
+    
+    .header h1 { 
+      background: var(--nexus-gradient-alt);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 700;
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+      text-shadow: 0 0 30px rgba(37, 99, 235, 0.3);
+    }
+    
+    .header .subtitle {
+      color: #64748b;
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 500;
+      opacity: 0;
+      animation: fadeInUp 0.8s ease-out 0.3s forwards;
+    }
+
+    .header .features-badges {
+      margin-top: 1rem;
+      opacity: 0;
+      animation: fadeInUp 0.8s ease-out 0.6s forwards;
+    }
+
+    .feature-badge {
+      display: inline-block;
+      background: var(--nexus-glass);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: var(--nexus-primary);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin: 0.2rem;
+      transition: var(--nexus-transition);
+    }
+
+    .feature-badge:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--nexus-shadow);
+    }
+
+    .feature-btn {
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.3s ease;
+    }
+
+    .feature-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 
+        0 8px 25px rgba(59, 130, 246, 0.15),
+        0 3px 10px rgba(0, 0, 0, 0.1);
+      background: rgba(59, 130, 246, 0.1);
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+
+    .feature-btn:active {
+      transform: translateY(-1px);
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ========================================
+       SETUP PANEL - GLASSMORPHISM DESIGN
+       ======================================== */
+    .setup-card { 
+      background: var(--nexus-backdrop);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: var(--nexus-border-radius);
+      margin-bottom: 2rem;
+      box-shadow: var(--nexus-shadow-lg);
+      transition: var(--nexus-transition);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .setup-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--nexus-gradient-alt);
+    }
+    
+    .setup-card.collapsed .setup-body { 
+      display: none; 
+    }
+
+    .setup-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .setup-toggle { 
+      cursor: pointer; 
+      user-select: none; 
+      padding: 1.5rem; 
+      transition: var(--nexus-transition);
+      position: relative;
+    }
+    
+    .setup-toggle:hover { 
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .setup-toggle:active { 
+      background: rgba(255, 255, 255, 0.2);
+    }
+    
+    .setup-body { 
+      padding: 0 1.5rem 1.5rem 1.5rem;
+      animation: slideDown 0.3s ease-out;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .collapse-icon { 
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      font-size: 1.2rem;
+      color: var(--nexus-primary);
+    }
+    
+    .collapsed .collapse-icon { 
+      transform: rotate(180deg); 
+    }
+
+    .setup-status {
+      position: absolute;
+      top: 1.5rem;
+      right: 4rem;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--nexus-danger);
+      transition: var(--nexus-transition);
+    }
+
+    .setup-status.configured {
+      background: var(--nexus-success);
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+    }
+
+    /* ========================================
+       CHAT INTERFACE - MODERN MESSAGING UI
+       ======================================== */
+    .chat-container { 
+      background: var(--nexus-backdrop);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: var(--nexus-border-radius);
+      height: 600px;
+      display: flex; 
+      flex-direction: column;
+      box-shadow: var(--nexus-shadow-lg);
+      transition: var(--nexus-transition);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .chat-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--nexus-gradient);
+    }
+
+    .chat-container:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.15);
+    }
+
+    .chat-header {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .chat-header h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--nexus-primary);
+    }
+
+    .chat-status {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--nexus-success);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    .chat-messages { 
+      flex: 1; 
+      overflow-y: auto; 
+      padding: 1.5rem;
+      scroll-behavior: smooth;
+    }
+    
+    .chat-input { 
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 1.5rem;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    /* ========================================
+       MESSAGE STYLES - ENHANCED BUBBLES
+       ======================================== */
+    .message { 
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: messageSlideIn 0.4s ease-out forwards;
+    }
+
+    @keyframes messageSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    
+    .message.user { 
+      text-align: right; 
+    }
+    
+    .message.user .msg-bubble { 
+      background: var(--nexus-gradient-alt);
+      color: white; 
+      display: inline-block; 
+      max-width: 75%; 
+      border-radius: 24px 24px 8px 24px; 
+      padding: 1rem 1.5rem;
+      box-shadow: var(--nexus-shadow);
+      position: relative;
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    .message.user .msg-bubble::before {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      right: 20px;
+      width: 0;
+      height: 0;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-top: 8px solid var(--nexus-primary);
+    }
+    
+    .message.assistant .msg-bubble { 
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      color: #1e293b;
+      display: inline-block; 
+      max-width: 75%; 
+      border-radius: 24px 24px 24px 8px; 
+      padding: 1rem 1.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: var(--nexus-shadow);
+      position: relative;
+      line-height: 1.6;
+    }
+
+    .message.assistant .msg-bubble::before {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 20px;
+      width: 0;
+      height: 0;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-top: 8px solid rgba(255, 255, 255, 0.95);
+    }
+    
+    .message.tool .msg-bubble { 
+      background: rgba(99, 102, 241, 0.1);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+      color: #4f46e5;
+      display: inline-block; 
+      max-width: 90%; 
+      border-radius: 16px; 
+      padding: 1rem 1.5rem;
+      font-family: 'JetBrains Mono', ui-monospace, monospace; 
+      font-size: 0.9rem;
+      box-shadow: var(--nexus-shadow-sm);
+      position: relative;
+      backdrop-filter: blur(10px);
+    }
+
+    .message-timestamp {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      margin-top: 0.5rem;
+      opacity: 0.7;
+    }
+
+    .message.user .message-timestamp {
+      text-align: right;
+    }
+    
+    .tool-label { 
+      font-size: 0.8rem;
+      color: var(--nexus-primary);
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .tool-label i {
+      color: var(--nexus-accent);
+    }
+
+    /* ========================================
+       LOADING SPINNER - ENHANCED ANIMATIONS
+       ======================================== */
+    .spinner { 
+      width: 1.2rem; 
+      height: 1.2rem;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-top-color: var(--nexus-primary);
+      border-radius: 50%; 
+      animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+      display: inline-block; 
+      margin-right: 0.5rem;
+    }
+    
+    @keyframes spin { 
+      to { transform: rotate(360deg); } 
+    }
+
+    /* ========================================
+       FORM CONTROLS - MODERN DESIGN SYSTEM
+       ======================================== */
+    .btn-primary { 
+      background: var(--nexus-gradient-alt);
+      border: none;
+      border-radius: 50px; 
+      padding: 0.75rem 2rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: var(--nexus-transition);
+      box-shadow: var(--nexus-shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn-primary:hover::before {
+      left: 100%;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+    
+    .btn-outline-secondary { 
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      background: transparent;
+      backdrop-filter: blur(10px);
+      color: #64748b;
+      border-radius: 50px;
+      font-weight: 500;
+      transition: var(--nexus-transition);
+    }
+
+    .btn-outline-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--nexus-primary);
+      color: var(--nexus-primary);
+      transform: translateY(-1px);
+    }
+    
+    .form-control, .form-select { 
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 16px;
+      padding: 0.875rem 1.25rem;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      transition: var(--nexus-transition);
+      font-weight: 500;
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: var(--nexus-primary);
+      box-shadow: 0 0 0 0.25rem rgba(37, 99, 235, 0.15);
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-1px);
+    }
+    
+    .input-group .form-control { 
+      border-radius: 16px 0 0 16px;
+      border-right: none;
+    }
+    
+    .input-group .btn { 
+      border-radius: 0 16px 16px 0;
+      border-left: none;
+    }
+
+    .form-label {
+      font-weight: 600;
+      color: #475569;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    /* ========================================
+       EXAMPLE BUTTONS - INTERACTIVE CARDS
+       ======================================== */
+    .quick-examples { 
+      background: var(--nexus-backdrop);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: var(--nexus-border-radius);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--nexus-shadow);
+      transition: var(--nexus-transition);
+    }
+
+    .quick-examples:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--nexus-shadow-lg);
+    }
+
+    .quick-examples h4 {
+      margin-bottom: 1rem;
+      color: var(--nexus-primary);
+      font-weight: 600;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .example-btn { 
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 50px;
+      padding: 0.75rem 1.25rem;
+      margin: 0.375rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer; 
+      transition: var(--nexus-transition);
+      user-select: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #475569;
+      box-shadow: var(--nexus-shadow-sm);
+    }
+    
+    .example-btn:hover { 
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: var(--nexus-shadow);
+      color: var(--nexus-primary);
+      border-color: rgba(37, 99, 235, 0.3);
+    }
+    
+    .example-btn:active { 
+      transform: translateY(-1px) scale(1);
+    }
+
+    .example-btn i {
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+
+    /* ========================================
+       THEME TOGGLE & UTILITIES
+       ======================================== */
+    .theme-toggle {
+      position: fixed;
+      top: 2rem;
+      right: 2rem;
+      z-index: 1000;
+      background: var(--nexus-backdrop);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 50px;
+      padding: 0.75rem;
+      cursor: pointer;
+      transition: var(--nexus-transition);
+      box-shadow: var(--nexus-shadow);
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: var(--nexus-shadow-lg);
+    }
+
+    .notifications {
+      position: fixed;
+      top: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1100;
+      max-width: 400px;
+      width: 100%;
+    }
+
+    .notification {
+      background: var(--nexus-backdrop);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: var(--nexus-border-radius);
+      padding: 1rem 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--nexus-shadow-lg);
+      animation: notificationSlide 0.4s ease-out;
+    }
+
+    @keyframes notificationSlide {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Thinking message styles */
+    .thinking-bubble {
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      backdrop-filter: blur(10px);
+    }
+
+    .thinking-content {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .thinking-dots {
+      display: flex;
+      gap: 0.25rem;
+    }
+
+    .thinking-dots span {
+      width: 6px;
+      height: 6px;
+      background: var(--nexus-primary);
+      border-radius: 50%;
+      animation: thinkingDots 1.4s infinite ease-in-out;
+    }
+
+    .thinking-dots span:nth-child(1) { animation-delay: -0.32s; }
+    .thinking-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+    .thinking-text {
+      color: var(--nexus-primary);
+      font-style: italic;
+      font-size: 0.9rem;
+    }
+
+    @keyframes thinkingDots {
+      0%, 80%, 100% {
+        transform: scale(0.8);
+        opacity: 0.5;
+      }
+      40% {
+        transform: scale(1.2);
+        opacity: 1;
+      }
+    }
+
+    /* ========================================
+       RESPONSIVE DESIGN
+       ======================================== */
+    @media (max-width: 768px) {
+      .main-container {
+        margin: 0 1rem;
+      }
+
+      .header h1 {
+        font-size: 2.5rem;
+      }
+
+      .chat-container {
+        height: 500px;
+      }
+
+      .message.user .msg-bubble,
+      .message.assistant .msg-bubble {
+        max-width: 90%;
+      }
+
+      .theme-toggle {
+        top: 1rem;
+        right: 1rem;
+      }
+
+      .setup-card,
+      .quick-examples {
+        margin-left: -0.5rem;
+        margin-right: -0.5rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Theme Toggle -->
+<div class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+  <i class="bi bi-moon-stars" id="themeIcon"></i>
+</div>
+
+<!-- Notifications Container -->
+<div class="notifications" id="notifications"></div>
+
+<!-- ========================================
+     MAIN CONTAINER
+     ======================================== -->
+<div class="container py-5 main-container">
+  
+  <!-- Enhanced Header -->
+  <div class="header">
+    <h1>⚡ Nexus AI</h1>
+    <p class="subtitle">Advanced Intelligence • Unlimited Possibilities</p>
+    <div class="features-badges">
+      <span class="feature-badge feature-btn" onclick="askExample('Search for the latest AI news and developments')" title="Try Web Search">
+        <i class="bi bi-search"></i> Web Search
+      </span>
+      <span class="feature-badge feature-btn" onclick="askExample('Create a JavaScript function to calculate prime numbers and test it')" title="Try Code Execution">
+        <i class="bi bi-code-slash"></i> Code Execution
+      </span>
+      <span class="feature-badge feature-btn" onclick="askExample('Use HTTP proxy to fetch data from https://api.github.com/users/octocat')" title="Try HTTP Proxy">
+        <i class="bi bi-cloud-arrow-up"></i> HTTP Proxy
+      </span>
+      <span class="feature-badge feature-btn" onclick="askExample('Generate real-time data analysis with current timestamp and system info')" title="Try Real-time Features">
+        <i class="bi bi-lightning-charge"></i> Real-time
+      </span>
+    </div>
+  </div>
+
+  <!-- Alert Container -->
+  <div id="alerts"></div>
+
+  <!-- Enhanced Setup Panel -->
+  <div class="setup-card collapsed">
+    <div class="setup-status" id="setupStatus"></div>
+    <div class="setup-toggle" onclick="toggleSetup()">
+      <div class="d-flex justify-content-between align-items-center">
+        <span><strong><i class="bi bi-gear-fill"></i> Configuration Center</strong> <span class="text-muted">(click to expand)</span></span>
+        <span class="collapse-icon">▼</span>
+      </div>
+    </div>
+    <div class="setup-body">
+      <div class="row g-3">
+        <div class="col-12">
+          <label class="form-label"><i class="bi bi-key-fill"></i> AI Pipe Token <span class="text-danger">*</span></label>
+          <input id="aipipeToken" class="form-control" placeholder="Your secure AI Pipe authentication token" />
+          <div class="form-text">
+            <a href="https://aipipe.org/login" target="_blank" class="btn btn-sm btn-outline-primary">
+              <i class="bi bi-box-arrow-up-right"></i> Get AI Pipe Token
+            </a>
+            <small class="text-muted ms-2">Required for all AI functionality</small>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label"><i class="bi bi-search"></i> Google Search API Key</label>
+          <input id="googleKey" class="form-control" placeholder="Optional - for web search capability"/>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label"><i class="bi bi-search"></i> Google Search Engine ID</label>
+          <input id="googleCx" class="form-control" placeholder="Optional - for web search capability"/>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label"><i class="bi bi-server"></i> AI Provider</label>
+          <select id="provider" class="form-select">
+            <option value="openai">OpenAI (via AI Pipe)</option>
+            <option value="openrouter">OpenRouter (via AI Pipe)</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label"><i class="bi bi-cpu"></i> Model</label>
+          <input id="model" class="form-control" value="gpt-4o-mini" placeholder="e.g. gpt-4o-mini" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enhanced Quick Examples -->
+  <div class="quick-examples">
+    <h4><i class="bi bi-lightbulb"></i> Quick Start Examples</h4>
+    
+    <!-- Test Button -->
+    <div class="example-btn" onclick="testButton()">
+      <i class="bi bi-gear"></i> Test Button (Click to verify)
+    </div>
+    
+    <div class="example-btn" onclick="askExample('Hello! How are you doing today?')">
+      <i class="bi bi-chat-dots"></i> Friendly Chat
+    </div>
+    <div class="example-btn" onclick="askExample('Calculate the factorial of 10 using JavaScript and explain the algorithm')">
+      <i class="bi bi-calculator"></i> Calculate Factorial
+    </div>
+    <div class="example-btn" onclick="askExample('Generate the first 20 Fibonacci numbers and visualize the pattern')">
+      <i class="bi bi-graph-up"></i> Fibonacci Sequence
+    </div>
+    <div class="example-btn" onclick="askExample('What are the latest developments in artificial intelligence? Search for recent news')">
+      <i class="bi bi-newspaper"></i> AI News Search
+    </div>
+    <div class="example-btn" onclick="askExample('Create a simple JavaScript function to sort an array and test it')">
+      <i class="bi bi-code-square"></i> Code Challenge
+    </div>
+  </div>
+
+  <!-- Enhanced Chat Interface -->
+  <div class="chat-container">
+    <div class="chat-header">
+      <h3><i class="bi bi-robot"></i> Intelligent Assistant</h3>
+      <div class="chat-status">
+        <div class="status-dot"></div>
+        <span>Online & Ready</span>
+      </div>
+    </div>
+    <div id="chat" class="chat-messages"></div>
+    <div class="chat-input">
+      <form id="chatForm">
+        <div class="input-group">
+          <input id="userInput" class="form-control" placeholder="Ask me anything... I can search, code, and reason!" required />
+          <button class="btn btn-primary" type="submit">
+            <i class="bi bi-send-fill"></i> Send
+          </button>
+          <button class="btn btn-outline-secondary" type="button" id="resetBtn">
+            <i class="bi bi-arrow-clockwise"></i> Reset
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================
+     JAVASCRIPT APPLICATION
+     ======================================== -->
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+'use strict';
+
+console.log('🚀 Nexus AI Script Loading...');
+
+// ============================================================================
+// IMMEDIATE GLOBAL FUNCTION DEFINITIONS (for onclick handlers)
+// ============================================================================
+
+/**
+ * Test function to verify buttons are working
+ */
+window.testButton = function() {
+  alert('Button is working!');
+  console.log('Test button clicked successfully');
+};
+
+/**
+ * Toggle setup panel visibility with status indicator
+ */
+window.toggleSetup = function() {
+  console.log('toggleSetup called');
+  try {
+    const setupCard = document.querySelector('.setup-card');
+    if (setupCard) {
+      setupCard.classList.toggle('collapsed');
+      console.log('Setup panel toggled:', !setupCard.classList.contains('collapsed') ? 'expanded' : 'collapsed');
+      
+      // Update status indicator
+      updateSetupStatus();
+    } else {
+      console.error('Setup card not found');
+    }
+  } catch (error) {
+    console.error('Error in toggleSetup:', error);
+    alert('Error: ' + error.message);
+  }
+};
+
+/**
+ * Handle example button clicks with enhanced validation
+ * @param {string} exampleText - The example text to send
+ */
+window.askExample = function(exampleText) {
+  console.log('askExample called with:', exampleText);
+  
+  try {
+    const tokenInput = document.getElementById('aipipeToken');
+    const userInput = document.getElementById('userInput');
+    const chatForm = document.getElementById('chatForm');
+    
+    if (!tokenInput || !userInput || !chatForm) {
+      console.error('Required elements not found');
+      alert('Page not fully loaded. Please refresh.');
+      return;
+    }
+    
+    // Validate AI Pipe token
+    if (!tokenInput.value.trim()) {
+      alert('Please configure your AI Pipe token first.');
+      // Auto-expand setup panel
+      document.querySelector('.setup-card')?.classList.remove('collapsed');
+      tokenInput.focus();
+      return;
+    }
+    
+    // Set input value and submit form
+    userInput.value = exampleText;
+    userInput.focus();
+    
+    // Dispatch form submission event
+    const submitEvent = new Event('submit', { bubbles: true, cancelable: true });
+    chatForm.dispatchEvent(submitEvent);
+    
+    console.log('Form submission event dispatched');
+    
+  } catch (error) {
+    console.error('Error in askExample:', error);
+    alert('Error: ' + error.message);
+  }
+};
+
+/**
+ * Update setup status indicator
+ */
+function updateSetupStatus() {
+  try {
+    const status = document.getElementById('setupStatus');
+    const tokenInput = document.getElementById('aipipeToken');
+    
+    if (status && tokenInput) {
+      const token = tokenInput.value.trim();
+      
+      if (token) {
+        status.classList.add('configured');
+        status.title = 'Configuration Complete';
+      } else {
+        status.classList.remove('configured');
+        status.title = 'Configuration Required';
+      }
+    }
+  } catch (error) {
+    console.error('Error updating setup status:', error);
+  }
+}
+
+/**
+ * Toggle between light and dark themes
+ */
+window.toggleTheme = function() {
+  console.log('toggleTheme called');
+  try {
+    const html = document.documentElement;
+    const currentTheme = html.getAttribute('data-bs-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    const icon = document.getElementById('themeIcon');
+    
+    html.setAttribute('data-bs-theme', newTheme);
+    if (icon) {
+      icon.className = newTheme === 'dark' ? 'bi bi-sun-fill' : 'bi bi-moon-stars';
+    }
+    
+    // Store preference
+    localStorage.setItem('theme', newTheme);
+    
+    alert(`Switched to ${newTheme} theme`);
+    
+  } catch (error) {
+    console.error('Error in toggleTheme:', error);
+    alert('Error: ' + error.message);
+  }
+};
+
+console.log('✅ Global functions defined:', {
+  testButton: typeof window.testButton,
+  toggleSetup: typeof window.toggleSetup,
+  askExample: typeof window.askExample,
+  toggleTheme: typeof window.toggleTheme
+});
+
+// ============================================================================
+// LLM AGENT POC - MAIN APPLICATION
+// A browser-based AI agent with multi-tool reasoning capabilities
+// ============================================================================
+
+// ============================================================================
+// CONFIGURATION
+// ============================================================================
+const CONFIG = {
+  MAX_LOOP_ITERATIONS: 5,
+  MAX_TOKENS: 1000,
+  TEMPERATURE: 0.7,
+  ENDPOINTS: {
+    OPENAI: 'https://aipipe.org/openai/v1',
+    OPENROUTER: 'https://aipipe.org/openrouter/v1',
+    AIPIPE_PROXY: 'https://aipipe.org/proxy'
+  }
+};
+
+// ============================================================================
+// GLOBAL STATE
+// ============================================================================
+let conversationMessages = [];
+let webWorker = null;
+
+// ============================================================================
+// DOM ELEMENT REFERENCES
+// ============================================================================
+const UI = {
+  alerts: document.getElementById('alerts'),
+  chat: document.getElementById('chat'),
+  form: document.getElementById('chatForm'),
+  input: document.getElementById('userInput'),
+  resetBtn: document.getElementById('resetBtn'),
+  provider: document.getElementById('provider'),
+  model: document.getElementById('model'),
+  token: document.getElementById('aipipeToken'),
+  googleKey: document.getElementById('googleKey'),
+  googleCx: document.getElementById('googleCx')
+};
+
+// ============================================================================
+// UTILITY FUNCTIONS
+// ============================================================================
+
+/**
+ * Display a user alert with auto-dismiss
+ * @param {string} message - Alert message
+ * @param {string} type - Bootstrap alert type (success, info, warning, danger)
+ * @param {number} timeout - Auto-dismiss timeout in milliseconds
+ */
+function showAlert(message, type = 'danger', timeout = 6000) {
+  const alertId = 'alert-' + Math.random().toString(36).slice(2);
+  const alertHTML = `
+    <div id="${alertId}" class="alert alert-${type} alert-dismissible fade show" role="alert">
+      ${message}
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+  `;
+  
+  UI.alerts.insertAdjacentHTML('beforeend', alertHTML);
+  
+  if (timeout > 0) {
+    setTimeout(() => {
+      const alertElement = document.getElementById(alertId);
+      if (alertElement) {
+        bootstrap.Alert.getOrCreateInstance(alertElement).close();
+      }
+    }, timeout);
+  }
+}
+
+/**
+ * Load AI Pipe user profile automatically
+ */
+async function loadAIPipeProfile() {
+  try {
+    const aiPipeModule = await import('https://aipipe.org/aipipe.js');
+    const profile = aiPipeModule.getProfile();
+    
+    if (profile.token) {
+      UI.token.value = profile.token;
+      console.log(`AI Pipe token loaded for user: ${profile.email}`);
+    }
+  } catch (error) {
+    console.warn('AI Pipe profile not available:', error.message);
+  }
+}
+
+// ============================================================================
+// MESSAGE HANDLING
+// ============================================================================
+
+/**
+ * Add a thinking message to indicate AI is processing
+ * @returns {HTMLElement} The thinking message element (for removal)
+ */
+function addThinkingMessage() {
+  const messageContainer = document.createElement('div');
+  messageContainer.className = 'message assistant thinking-message';
+  messageContainer.id = 'thinking-message';
+  
+  const bubble = document.createElement('div');
+  bubble.className = 'msg-bubble thinking-bubble';
+  
+  bubble.innerHTML = `
+    <div class="thinking-content">
+      <div class="thinking-dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <span class="thinking-text">AI is thinking...</span>
+    </div>
+  `;
+  
+  messageContainer.appendChild(bubble);
+  UI.chat.appendChild(messageContainer);
+  UI.chat.scrollTop = UI.chat.scrollHeight;
+  
+  return messageContainer;
+}
+
+/**
+ * Remove the thinking message
+ */
+function removeThinkingMessage() {
+  const thinkingMessage = document.getElementById('thinking-message');
+  if (thinkingMessage) {
+    thinkingMessage.remove();
+  }
+}
+
+/**
+ * Add a message to the chat interface with enhanced styling
+ * @param {string} role - Message role (user, assistant, tool)
+ * @param {string} content - Message content
+ * @param {Object} metadata - Additional message metadata
+ */
+function addChatMessage(role, content, metadata = {}) {
+  // Add user messages to conversation history
+  if (role === 'user') {
+    conversationMessages.push({ role, content });
+  }
+  
+  // Create message container
+  const messageContainer = document.createElement('div');
+  messageContainer.className = `message ${role}`;
+  
+  // Add tool label for tool messages with icon
+  if (metadata.toolName && role === 'tool') {
+    const toolLabel = document.createElement('div');
+    toolLabel.className = 'tool-label';
+    
+    const toolIcons = {
+      search_snippets: 'bi-search',
+      ai_pipe_proxy: 'bi-cloud-arrow-up',
+      exec_js: 'bi-code-slash'
+    };
+    
+    const icon = toolIcons[metadata.toolName] || 'bi-gear';
+    toolLabel.innerHTML = `<i class="bi ${icon}"></i> ${metadata.toolName.replace('_', ' ').toUpperCase()}`;
+    messageContainer.appendChild(toolLabel);
+  }
+  
+  // Create message bubble
+  const messageBubble = document.createElement('div');
+  messageBubble.className = 'msg-bubble';
+  messageBubble.textContent = typeof content === 'string' ? content : JSON.stringify(content, null, 2);
+  messageContainer.appendChild(messageBubble);
+  
+  // Add timestamp
+  const timestamp = document.createElement('div');
+  timestamp.className = 'message-timestamp';
+  timestamp.textContent = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+  messageContainer.appendChild(timestamp);
+  
+  // Add to chat and scroll to bottom with animation
+  UI.chat.appendChild(messageContainer);
+  
+  // Smooth scroll to bottom
+  setTimeout(() => {
+    UI.chat.scrollTo({
+      top: UI.chat.scrollHeight,
+      behavior: 'smooth'
+    });
+  }, 100);
+}
+
+/**
+ * Show enhanced loading spinner with typing indicator
+ * @param {string} label - Loading message
+ * @returns {Function} Function to remove the spinner
+ */
+function showLoadingSpinner(label = 'Processing...') {
+  const spinnerId = 'spinner-' + Math.random().toString(36).slice(2);
+  const spinnerContainer = document.createElement('div');
+  spinnerContainer.className = 'message assistant';
+  spinnerContainer.id = spinnerId;
+  
+  // Create typing indicator instead of spinner
+  const typingIndicator = document.createElement('div');
+  typingIndicator.className = 'typing-indicator';
+  typingIndicator.innerHTML = `
+    <div class="typing-dot"></div>
+    <div class="typing-dot"></div>
+    <div class="typing-dot"></div>
+  `;
+  spinnerContainer.appendChild(typingIndicator);
+  
+  UI.chat.appendChild(spinnerContainer);
+  UI.chat.scrollTo({
+    top: UI.chat.scrollHeight,
+    behavior: 'smooth'
+  });
+  
+  // Return function to remove spinner
+  return () => {
+    const spinner = document.getElementById(spinnerId);
+    if (spinner) {
+      spinner.style.opacity = '0';
+      spinner.style.transform = 'translateY(-10px)';
+      setTimeout(() => spinner.remove(), 300);
+    }
+  };
+}
+
+// ============================================================================
+// TOOL SYSTEM
+// ============================================================================
+
+/**
+ * Get available tools based on current configuration
+ * @returns {Array} Array of tool definitions
+ */
+function getAvailableTools() {
+  const tools = [
+    {
+      type: 'function',
+      function: {
+        name: 'ai_pipe_proxy',
+        description: 'Make HTTP requests through AI Pipe proxy to bypass CORS restrictions',
+        parameters: {
+          type: 'object',
+          properties: {
+            url: { 
+              type: 'string', 
+              description: 'Target URL (must start with http:// or https://)' 
+            },
+            method: { 
+              type: 'string', 
+              enum: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'], 
+              default: 'GET',
+              description: 'HTTP method'
+            },
+            headers: { 
+              type: 'object', 
+              additionalProperties: { type: 'string' },
+              description: 'HTTP headers as key-value pairs'
+            },
+            body: { 
+              oneOf: [{ type: 'string' }, { type: 'object' }],
+              description: 'Request body (string or JSON object)'
+            }
+          },
+          required: ['url']
+        }
+      }
+    },
+    {
+      type: 'function',
+      function: {
+        name: 'exec_js',
+        description: 'Execute JavaScript code in a secure sandboxed environment',
+        parameters: {
+          type: 'object',
+          properties: { 
+            code: { 
+              type: 'string', 
+              description: 'JavaScript code to execute. Can include console.log() and return values.' 
+            } 
+          },
+          required: ['code']
+        }
+      }
+    }
+  ];
+
+  // Add Google Search tool if API credentials are configured
+  const hasGoogleCredentials = UI.googleKey.value.trim() && UI.googleCx.value.trim();
+  if (hasGoogleCredentials) {
+    tools.unshift({
+      type: 'function',
+      function: {
+        name: 'search_snippets',
+        description: 'Search the web using Google Custom Search API and return relevant snippets',
+        parameters: {
+          type: 'object',
+          properties: { 
+            q: { 
+              type: 'string', 
+              description: 'Search query string' 
+            }, 
+            num: { 
+              type: 'integer', 
+              minimum: 1, 
+              maximum: 10, 
+              default: 3,
+              description: 'Number of search results to return (1-10)' 
+            } 
+          },
+          required: ['q']
+        }
+      }
+    });
+  }
+
+  return tools;
+}
+
+/**
+ * Generate system prompt based on available tools
+ * @returns {string} System prompt text
+ */
+function generateSystemPrompt() {
+  const hasSearchCapability = UI.googleKey.value.trim() && UI.googleCx.value.trim();
+  
+  let prompt = 'You are a helpful AI assistant. Available tools:\n';
+  prompt += '- exec_js: Execute JavaScript code for calculations, data processing, and programming tasks\n';
+  prompt += '- ai_pipe_proxy: Make HTTP requests to fetch data from web APIs and websites\n';
+  
+  if (hasSearchCapability) {
+    prompt += '- search_snippets: Search the web for current information and facts\n';
+  } else {
+    prompt += '\nNote: Web search is currently unavailable (requires Google API configuration).\n';
+  }
+  
+  prompt += '\nBe concise and helpful. Use tools strategically when they add value to your response.';
+  
+  return prompt;
+}
+
+/**
+ * Execute a tool call and return the result
+ * @param {Object} toolCall - Tool call object from LLM response
+ * @returns {Object} Tool execution result
+ */
+async function executeToolCall(toolCall) {
+  const { name: toolName, arguments: argumentsJson, id: callId } = toolCall.function;
+  
+  let toolArguments = {};
+  try {
+    toolArguments = argumentsJson ? JSON.parse(argumentsJson) : {};
+  } catch (parseError) {
+    console.error('Failed to parse tool arguments:', parseError);
+    toolArguments = {};
+  }
+
+  try {
+    let result, displayText;
+
+    switch (toolName) {
+      case 'search_snippets':
+        result = await executeGoogleSearch(toolArguments);
+        displayText = formatSearchResults(result);
+        break;
+        
+      case 'ai_pipe_proxy':
+        result = await executeHttpRequest(toolArguments);
+        displayText = formatHttpResults(result);
+        break;
+        
+      case 'exec_js':
+        result = await executeJavaScriptCode(toolArguments.code);
+        displayText = formatJavaScriptResults(result);
+        break;
+        
+      default:
+        throw new Error(`Unknown tool: ${toolName}`);
+    }
+
+    // Display tool result in chat
+    addChatMessage('tool', displayText, { toolName, toolCallId: callId });
+    
+    return { 
+      tool_call_id: callId, 
+      output: JSON.stringify(result) 
+    };
+    
+  } catch (error) {
+    const errorResult = { success: false, error: error.message };
+    const errorDisplay = `❌ Error: ${error.message}`;
+    
+    showAlert(`Tool "${toolName}" failed: ${error.message}`);
+    addChatMessage('tool', errorDisplay, { toolName, toolCallId: callId });
+    
+    return { 
+      tool_call_id: callId, 
+      output: JSON.stringify(errorResult) 
+    };
+  }
+}
+
+// ============================================================================
+// TOOL IMPLEMENTATIONS
+// ============================================================================
+
+/**
+ * Execute Google Search via Custom Search API
+ * @param {Object} args - Search arguments {q, num}
+ * @returns {Object} Search results
+ */
+async function executeGoogleSearch(args) {
+  const searchQuery = encodeURIComponent(args.q);
+  const resultCount = Math.min(Math.max(parseInt(args.num || 3, 10), 1), 10);
+  const apiKey = UI.googleKey.value.trim();
+  const searchEngineId = UI.googleCx.value.trim();
+  
+  if (!apiKey || !searchEngineId) {
+    throw new Error('Google Search requires both API key and Custom Search Engine ID');
+  }
+  
+  const searchApiUrl = `https://www.googleapis.com/customsearch/v1?key=${apiKey}&cx=${searchEngineId}&q=${searchQuery}&num=${resultCount}`;
+  const proxyUrl = `${CONFIG.ENDPOINTS.AIPIPE_PROXY}/${encodeURIComponent(searchApiUrl)}`;
+  
+  const response = await fetch(proxyUrl);
+  if (!response.ok) {
+    throw new Error(`Google Search API error: ${response.status} ${response.statusText}`);
+  }
+  
+  const searchData = await response.json();
+  const searchItems = (searchData.items || []).map(item => ({
+    title: item.title,
+    link: item.link,
+    snippet: item.snippet
+  }));
+  
+  return { 
+    success: true, 
+    query: args.q, 
+    results: searchItems,
+    totalResults: searchData.searchInformation?.totalResults || '0'
+  };
+}
+
+/**
+ * Execute HTTP request via AI Pipe proxy
+ * @param {Object} args - Request arguments {url, method, headers, body}
+ * @returns {Object} HTTP response data
+ */
+async function executeHttpRequest(args) {
+  if (!args.url || !/^https?:\/\//.test(args.url)) {
+    throw new Error('Invalid URL - must start with http:// or https://');
+  }
+  
+  const requestOptions = {
+    method: args.method || 'GET',
+    headers: args.headers || {}
+  };
+  
+  // Handle request body
+  if (args.body !== undefined) {
+    if (typeof args.body === 'object') {
+      requestOptions.body = JSON.stringify(args.body);
+      requestOptions.headers['Content-Type'] = requestOptions.headers['Content-Type'] || 'application/json';
+    } else {
+      requestOptions.body = String(args.body);
+    }
+  }
+  
+  const proxyUrl = `${CONFIG.ENDPOINTS.AIPIPE_PROXY}/${encodeURIComponent(args.url)}`;
+  const response = await fetch(proxyUrl, requestOptions);
+  
+  let responseText = '';
+  try {
+    responseText = await response.text();
+  } catch (error) {
+    responseText = `[Failed to read response: ${error.message}]`;
+  }
+  
+  return {
+    success: response.ok,
+    status: response.status,
+    statusText: response.statusText,
+    url: args.url,
+    method: args.method || 'GET',
+    responseText: responseText.slice(0, 5000), // Limit response size
+    responseLength: responseText.length
+  };
+}
+
+/**
+ * Execute JavaScript code in secure Web Worker
+ * @param {string} code - JavaScript code to execute
+ * @returns {Object} Execution result
+ */
+async function executeJavaScriptCode(code) {
+  return new Promise((resolve) => {
+    const worker = getJavaScriptWorker();
+    
+    // Set up response handler
+    worker.onmessage = (event) => resolve(event.data);
+    
+    // Send code to worker
+    worker.postMessage(code);
+  });
+}
+
+/**
+ * Get or create secure Web Worker for JavaScript execution
+ * @returns {Worker} Web Worker instance
+ */
+function getJavaScriptWorker() {
+  if (webWorker) return webWorker;
+  
+  const workerScript = `
+    self.onmessage = async (event) => {
+      const userCode = event.data;
+      const consoleLogs = [];
+      const originalConsoleLog = console.log;
+      
+      // Intercept console.log calls
+      console.log = (...args) => {
+        consoleLogs.push(
+          args.map(arg => 
+            typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+          ).join(' ')
+        );
+      };
+      
+      try {
+        // Execute user code in async context to support await
+        const executionResult = await (async () => {
+          return await (0, eval)(userCode);
+        })();
+        
+        // Restore original console.log
+        console.log = originalConsoleLog;
+        
+        self.postMessage({ 
+          success: true, 
+          result: executionResult,
+          consoleLogs: consoleLogs,
+          executedCode: userCode
+        });
+        
+      } catch (executionError) {
+        // Restore original console.log
+        console.log = originalConsoleLog;
+        
+        self.postMessage({ 
+          success: false, 
+          error: String(executionError),
+          consoleLogs: consoleLogs,
+          executedCode: userCode
+        });
+      }
+    };
+  `;
+  
+  const workerBlob = new Blob([workerScript], { type: 'text/javascript' });
+  const workerUrl = URL.createObjectURL(workerBlob);
+  webWorker = new Worker(workerUrl);
+  
+  return webWorker;
+}
+
+// ============================================================================
+// RESULT FORMATTERS
+// ============================================================================
+
+/**
+ * Format Google Search results for display
+ * @param {Object} result - Search result object
+ * @returns {string} Formatted display text
+ */
+function formatSearchResults(result) {
+  const { results, query, totalResults } = result;
+  
+  if (!results || results.length === 0) {
+    return `No search results found for "${query}"`;
+  }
+  
+  let formatted = `Found ${results.length} results for "${query}" (${totalResults} total):\n\n`;
+  
+  formatted += results.map((item, index) => 
+    `${index + 1}. ${item.title}\n   ${item.snippet}\n   🔗 ${item.link}`
+  ).join('\n\n');
+  
+  return formatted;
+}
+
+/**
+ * Format HTTP request results for display
+ * @param {Object} result - HTTP result object
+ * @returns {string} Formatted display text
+ */
+function formatHttpResults(result) {
+  const { method, url, status, statusText, responseText, responseLength } = result;
+  
+  let formatted = `HTTP ${method} ${url}\n`;
+  formatted += `Status: ${status} ${statusText}\n`;
+  formatted += `Response Length: ${responseLength} chars\n\n`;
+  
+  if (responseText) {
+    const preview = responseText.slice(0, 500);
+    const truncated = responseLength > 500 ? '\n\n... (truncated)' : '';
+    formatted += `Response Preview:\n${preview}${truncated}`;
+  }
+  
+  return formatted;
+}
+
+/**
+ * Format JavaScript execution results for display
+ * @param {Object} result - JavaScript execution result
+ * @returns {string} Formatted display text
+ */
+function formatJavaScriptResults(result) {
+  if (result.success) {
+    let formatted = '✅ JavaScript executed successfully\n\n';
+    
+    if (result.consoleLogs && result.consoleLogs.length > 0) {
+      formatted += 'Console Output:\n';
+      formatted += result.consoleLogs.map(log => `  ${log}`).join('\n');
+      formatted += '\n\n';
+    }
+    
+    formatted += `Return Value: ${JSON.stringify(result.result, null, 2)}`;
+    return formatted;
+  } else {
+    return `❌ JavaScript execution failed:\n${result.error}`;
+  }
+}
+
+// ============================================================================
+// LLM COMMUNICATION
+// ============================================================================
+
+/**
+ * Call LLM API with current conversation and available tools
+ * @param {Array} messages - Conversation messages
+ * @returns {Object} LLM API response
+ */
+async function callLLMAPI(messages) {
+  const provider = UI.provider.value;
+  const model = UI.model.value.trim();
+  const token = UI.token.value.trim();
+  
+  if (!token) {
+    throw new Error('AI Pipe token is required. Please configure it in the setup panel.');
+  }
+
+  const apiBaseUrl = provider === 'openrouter' ? CONFIG.ENDPOINTS.OPENROUTER : CONFIG.ENDPOINTS.OPENAI;
+  const apiEndpoint = `${apiBaseUrl}/chat/completions`;
+  const availableTools = getAvailableTools();
+  
+  const requestPayload = {
+    model: model,
+    messages: messages,
+    tools: availableTools,
+    max_tokens: CONFIG.MAX_TOKENS,
+    temperature: CONFIG.TEMPERATURE
+  };
+  
+  console.log('LLM API Request:', {
+    endpoint: apiEndpoint,
+    model: model,
+    messageCount: messages.length,
+    toolCount: availableTools.length,
+    availableTools: availableTools.map(t => t.function.name)
+  });
+  
+  const response = await fetch(apiEndpoint, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(requestPayload)
+  });
+  
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error('LLM API Error:', {
+      status: response.status,
+      statusText: response.statusText,
+      errorText: errorText.slice(0, 500)
+    });
+    throw new Error(`LLM API error ${response.status}: ${errorText.slice(0, 300)}`);
+  }
+  
+  const apiResult = await response.json();
+  console.log('LLM API Response received:', {
+    model: apiResult.model,
+    usage: apiResult.usage
+  });
+  
+  return apiResult;
+}
+
+/**
+ * Main agent reasoning loop
+ * Handles LLM responses and orchestrates tool calls
+ */
+async function runAgentReasoningLoop() {
+  const removeSpinner = showLoadingSpinner('Processing...');
+  let firstResponse = true; // Track if this is the first response
+  
+  try {
+    let iterationCount = 0;
+    
+    while (iterationCount < CONFIG.MAX_LOOP_ITERATIONS) {
+      // Call LLM with current conversation
+      const llmResponse = await callLLMAPI(conversationMessages);
+      const assistantMessage = llmResponse.choices?.[0]?.message;
+      
+      if (!assistantMessage) {
+        console.warn('No assistant message in LLM response');
+        break;
+      }
+      
+      const { content: textContent, tool_calls: toolCalls } = assistantMessage;
+      
+      // Add assistant message to conversation history
+      conversationMessages.push({
+        role: 'assistant',
+        content: textContent || '',
+        tool_calls: toolCalls
+      });
+      
+      // Remove thinking message on first response
+      if (firstResponse) {
+        removeThinkingMessage();
+        firstResponse = false;
+      }
+      
+      // Display assistant's text response
+      if (textContent && textContent.trim()) {
+        addChatMessage('assistant', textContent);
+      }
+      
+      // Execute tool calls if present
+      if (toolCalls && toolCalls.length > 0) {
+        console.log(`Executing ${toolCalls.length} tool call(s)`);
+        
+        for (const toolCall of toolCalls) {
+          const toolResult = await executeToolCall(toolCall);
+          
+          // Add tool result to conversation
+          conversationMessages.push({
+            role: 'tool',
+            tool_call_id: toolCall.id,
+            content: toolResult.output
+          });
+        }
+        
+        iterationCount++;
+      } else {
+        // No more tool calls, reasoning complete
+        console.log('Agent reasoning complete - no more tool calls');
+        break;
+      }
+    }
+    
+    if (iterationCount >= CONFIG.MAX_LOOP_ITERATIONS) {
+      showAlert(`Reasoning loop completed after ${CONFIG.MAX_LOOP_ITERATIONS} iterations`, 'info');
+    }
+    
+  } catch (error) {
+    console.error('Agent reasoning error:', error);
+    removeThinkingMessage(); // Remove thinking message on error
+    showAlert(`Agent error: ${error.message}`);
+  } finally {
+    removeSpinner();
+  }
+}
+
+// ============================================================================
+// CHAT MANAGEMENT
+// ============================================================================
+
+/**
+ * Reset conversation to initial state
+ */
+function resetConversation() {
+  conversationMessages = [{ 
+    role: 'system', 
+    content: generateSystemPrompt() 
+  }];
+  
+  UI.chat.innerHTML = '';
+  
+  addChatMessage('assistant', 
+    'Hello! I\'m your AI assistant. I can run JavaScript code, make HTTP requests, and help with various tasks. ' +
+    (UI.googleKey.value.trim() && UI.googleCx.value.trim() ? 
+      'I can also search the web for you. ' : '') +
+    'What would you like me to help you with?'
+  );
+  
+  console.log('Conversation reset');
+}
+
+// ============================================================================
+// EVENT HANDLERS
+// ============================================================================
+
+/**
+ * Handle chat form submission
+ */
+UI.form.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  
+  const userMessage = UI.input.value.trim();
+  if (!userMessage) return;
+  
+  // Validate AI Pipe token
+  if (!UI.token.value.trim()) {
+    showAlert('Please configure your AI Pipe token first. Click "Get AI Pipe Token" in the setup panel.', 'warning');
+    return;
+  }
+  
+  // Add user message to chat and clear input
+  addChatMessage('user', userMessage);
+  UI.input.value = '';
+  
+  // Add thinking message
+  addThinkingMessage();
+  
+  // Start agent reasoning loop
+  await runAgentReasoningLoop();
+});
+
+/**
+ * Handle reset button click
+ */
+UI.resetBtn.addEventListener('click', () => {
+  resetConversation();
+});
+
+// ============================================================================
+// APPLICATION INITIALIZATION
+// ============================================================================
+
+/**
+ * Initialize the application with enhanced features
+ */
+async function initializeApplication() {
+  console.log('🚀 Initializing Nexus AI Platform...');
+  
+  // Initialize theme
+  initializeTheme();
+  
+  // Load AI Pipe profile if available
+  await loadAIPipeProfile();
+  
+  // Set up status monitoring
+  updateSetupStatus();
+  
+  // Monitor configuration changes
+  [UI.token, UI.googleKey, UI.googleCx].forEach(input => {
+    input.addEventListener('input', updateSetupStatus);
+  });
+  
+  // Reset conversation to initial state
+  resetConversation();
+  
+  // Show welcome notification
+  showNotification('🎉 Nexus AI is ready! Try the examples below or ask me anything.', 'success', 6000);
+  
+  console.log('✅ Nexus AI Platform initialized successfully');
+  console.log('🔧 Available capabilities:', {
+    jsExecution: true,
+    httpProxy: true,
+    googleSearch: !!(UI.googleKey.value.trim() && UI.googleCx.value.trim()),
+    theme: document.documentElement.getAttribute('data-bs-theme')
+  });
+  
+  // Add subtle welcome animation
+  document.querySelector('.main-container').style.opacity = '0';
+  document.querySelector('.main-container').style.transform = 'translateY(20px)';
+  
+  setTimeout(() => {
+    document.querySelector('.main-container').style.transition = 'all 0.8s ease-out';
+    document.querySelector('.main-container').style.opacity = '1';
+    document.querySelector('.main-container').style.transform = 'translateY(0)';
+  }, 100);
+}
+
+/**
+ * Enhanced conversation reset
+ */
+function resetConversation() {
+  conversationMessages = [{ 
+    role: 'system', 
+    content: generateSystemPrompt() 
+  }];
+  
+  UI.chat.innerHTML = '';
+  
+  // Welcome message with enhanced styling
+  const welcomeMessages = [
+    'Welcome to Nexus AI! ⚡',
+    'I\'m your advanced AI assistant with powerful capabilities:',
+    '🔍 Web search and research',
+    '💻 Code execution and debugging', 
+    '🌐 HTTP requests and API integration',
+    '🧠 Multi-step reasoning and problem solving',
+    '',
+    'Try the examples above or ask me anything!'
+  ];
+  
+  welcomeMessages.forEach((msg, index) => {
+    setTimeout(() => {
+      if (msg === '') {
+        // Add a small visual break
+        const br = document.createElement('br');
+        UI.chat.appendChild(br);
+      } else {
+        addChatMessage('assistant', msg);
+      }
+    }, index * 200);
+  });
+  
+  console.log('💬 Conversation reset with enhanced welcome');
+}
+
+// Enhanced error handling
+window.addEventListener('error', (event) => {
+  console.error('Application Error:', event.error);
+  showNotification('An unexpected error occurred. Please refresh the page.', 'danger');
+});
+
+window.addEventListener('unhandledrejection', (event) => {
+  console.error('Unhandled Promise Rejection:', event.reason);
+  showNotification('Network or API error occurred. Please check your connection.', 'warning');
+});
+
+// Start the enhanced application
+initializeApplication();
+
+</script>
+</body>
+</html>

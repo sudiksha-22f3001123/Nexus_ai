@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Test</title>
+    <style>
+        .test-btn {
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+            font-size: 16px;
+        }
+        .test-btn:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Button Click Test</h1>
+    
+    <button class="test-btn" onclick="testClick()">Test Button 1</button>
+    <button class="test-btn" onclick="alert('Button 2 works!')">Test Button 2</button>
+    
+    <div id="output"></div>
+    
+    <script>
+        console.log('Script loaded');
+        
+        function testClick() {
+            alert('Test button 1 works!');
+            document.getElementById('output').innerHTML = 'Button clicked at ' + new Date();
+            console.log('testClick function executed');
+        }
+        
+        // Test if functions are global
+        window.testGlobal = function() {
+            alert('Global function works!');
+        };
+        
+        console.log('Functions defined');
+    </script>
+    
+    <button class="test-btn" onclick="testGlobal()">Test Global Function</button>
+</body>
+</html>
